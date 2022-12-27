@@ -2,6 +2,8 @@
 
 
 #include "CodeTest.h"
+#include "PointerTest.h"
+
 #pragma warning (disable : 4458) //c4458 경고끄기
 
 // Sets default values
@@ -158,10 +160,58 @@ void ACodeTest::BeginPlay()
 		UE_LOG(LogTemp, Warning, TEXT("=============="));
 	}*/
 
-	Gugudan(7);
+	
+	//Gugudan(7);
 
-	UE_LOG(LogTemp, Warning, TEXT("%d"),Add(3,1));
+	//UE_LOG(LogTemp, Warning, TEXT("%d"),Add(3,1));
 
+	//distances.Add(TEXT("서울"), 250.5f);
+	//distances.Add(TEXT("인천"), 134.7f);
+	//distances.Add(TEXT("의정부"), 187.6f);
+	//distances.Add("seoul", 789.1f);
+	
+	
+
+	//UE_LOG(LogTemp, Warning, TEXT("%s : %f"), *mykey, distances[mykey]);
+	
+	//for (auto dist : distances) {
+	//	UE_LOG(LogTemp, Warning, TEXT("%s - %.1f"), *dist.Key, dist.Value);
+	//}
+
+	//UE_LOG(LogTemp, Warning, TEXT("Array Length %d"), ages.Num());
+	
+	//for (int32 i = 0; i < ages.Num(); i++)
+	//{
+	//	UE_LOG(LogTemp, Warning, TEXT("%d"), ages[i]);
+	//}
+	//for (auto age : ages)
+	//{
+	//	UE_LOG(LogTemp, Warning, TEXT("%d"), age);
+	//}
+
+	
+	//Pointer
+	//int32 slice = 20;
+	//int32 *Number = &slice;
+	//slice = 30;
+
+	//UE_LOG(LogTemp, Warning, TEXT("Number : %p, slice : %p"),Number,&slice);
+
+	//int32 aa = 10;
+	//int32 bb = 15;
+	//int32 result;
+	//result = Add(aa,bb);
+
+	//UE_LOG(LogTemp, Warning, TEXT("Result = %d, aa = %d, bb = %d"), result, aa, bb);
+
+
+	//for (APointerTest* pt : pointertest) {
+	//	pt->pt_number = 15;
+	//}
+
+	if (pointertest != nullptr) {
+		*(pointertest->myAge) = 15;
+	}
 }
 
 
@@ -182,9 +232,11 @@ void ACodeTest::Tick(float DeltaTime)
 }
 
 
-int32 ACodeTest::Add(int32 num1, int32 num2)
+int32 ACodeTest::Add(int32 &num1, int32 &num2)
 {
 	// to do
+	num1 *= 2;
+	num2 *= 2;
 	int32 result = num1 + num2;
 	return result;
 }
@@ -220,3 +272,8 @@ FString ACodeTest::StringAppender(FString myname, FString firstname)
 //전역변수 & 지역변수
 //Header파일에 선언한 변수,함수 바깥쪽 && 클래스 안쪽 => 전역변수 (여러함수에 쓰임, 항상 변수가 유지되어야하는 경우 ex 체력,목숨)
 //함수 안에 선언한 변수 => 지역변수
+
+
+//struct(구조체) => Fvector(대표적인 구조체)
+//TArray(배열)
+//TMap  [key] : [value]

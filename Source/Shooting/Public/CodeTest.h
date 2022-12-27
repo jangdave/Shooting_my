@@ -6,6 +6,7 @@
 #include "GameFramework/Actor.h"
 #include "CodeTest.generated.h"
 
+
 UCLASS()
 class SHOOTING_API ACodeTest : public AActor
 {
@@ -56,7 +57,7 @@ public:
 	// bool isStudent = false;
 	bool isTeacher = true;
 
-	int32 Add(int32 num1, int32 num2);
+	int32 Add(int32 &num1, int32 &num2);
 
 	int32 Subtract(int32 num1, int32 num2);
 
@@ -79,4 +80,16 @@ public:
 
 	void Gugudan(int32 gugunum);
 
+	UPROPERTY(EditAnywhere, Category = CodeVariable)
+	TArray <int32> ages;
+
+	UPROPERTY(EditAnywhere, Category = CodeVariable)
+	TMap <FString, float> distances;
+
+	//UPROPERTY(EditAnywhere, Category = CodeVariable)
+	//TArray<class APointerTest*>pointertest;
+	// 다른 헤더파일을 헤더 파일로 불러올때는 앞에 class를 붙이면 된다.
+
+	UPROPERTY(EditAnywhere, Category = CodeVariable)
+	class APointerTest*pointertest;
 };
