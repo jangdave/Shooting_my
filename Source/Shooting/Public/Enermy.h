@@ -40,7 +40,7 @@ public:
 
 private:
 	FVector direction;
-	//타겟 찾는법 클래스
+	//타겟 찾는법 - 클래스
 	class APlayerFlight* target;
 
 };

@@ -7,6 +7,7 @@
 #include "Kismet/Gameplaystatics.h"
 #include "PlayerFlight.h"
 #include "EngineUtils.h"
+#include "ShootingMyGameMode.h"
 
 // Sets default values
 AEnermy::AEnermy()
@@ -31,7 +32,6 @@ AEnermy::AEnermy()
 
 	meshComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Static Mesh"));
 	meshComp->SetupAttachment(RootComponent);
-
 }
 
 // Called when the game starts or when spawned
@@ -50,7 +50,7 @@ void AEnermy::BeginPlay()
 		//AActor* target = UGameplayStatics::GetActorOfClass(GetWorld(), APlayerFlight::StaticClass());
 
 		
-		//for문으로도 할수있다 it; => it !=nullprt *****************************************************2번********
+		//for문으로도 할수있다 it; => it != nullprt *****************************************************2번********
 		for (TActorIterator<APlayerFlight> it(GetWorld()); it; ++it)
 		{
 			target = *it; 
@@ -59,15 +59,17 @@ void AEnermy::BeginPlay()
 		{
 			float temp = target->moveSpeed;
 		}
+		else if (target != nullptr)
+		{
+			//2-2. 플레이어위치 - 나의 위치 = 갈 방향을 설정
+			FVector targetDir = target->GetActorLocation() - GetActorLocation();
 
-		//2-2. 플레이어위치 - 나의 위치 = 갈 방향을 설정
-		FVector targetDir = target->GetActorLocation() - GetActorLocation();
+			targetDir.Normalize();
 
-		targetDir.Normalize();
-
-		direction = targetDir;
+			direction = targetDir;
+		}
 	}
-	
+
 	//3. 그렇지 않으면
 	else
 	{
@@ -94,11 +96,19 @@ void AEnermy::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherA
 
 	if (player != nullptr)
 	{
-		//player->Destroy();
-		player->ReservationHitColor(0.2f);
+		player->Destroy();
+
+		//메뉴위젯을 생성하는 함수를 실행한다
+		AShootingMyGameMode* gm = Cast<AShootingMyGameMode>(GetWorld()->GetAuthGameMode());
+		if (gm != nullptr)
+		{
+			gm->ShowMenu();
+		}
+
+		//색상 변환
+		//player->ReservationHitColor(0.2f);
 
 		Destroy();
 	}
 		
 }
-
