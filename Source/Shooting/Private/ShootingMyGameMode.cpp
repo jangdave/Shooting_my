@@ -32,6 +32,12 @@ void AShootingMyGameMode::BeginPlay()
 		Main_UI->PrintCurrentScore();
 	}
 
+	//FString testPath = FPaths::GetProjectFilePath(); 첫번째
+	//FString testPath = FPaths::ProjectConfigDir()+ TEXT("SaveScore/SaveScore.txt"); 두번째
+	//UE_LOG(LogTemp,Warning,TEXT("test path: %s"), *testPath);
+
+	//스크린에 로그출력하기
+	//GEngine->AddOnScreenDebugMessage(1, 3.0f, FColor::Emerald, TEXT("logTest"), true);
 }
 
 void AShootingMyGameMode::AddScore(int32 count)

@@ -44,4 +44,5 @@ private:
 
 	FString filePath = FString("D:/unreal/Shooting_my/Content/SaveScore/BestScore.txt");
 	
+	FString filePath2 = FString("../../../Content/SaveScore/BestScore.txt");
 };

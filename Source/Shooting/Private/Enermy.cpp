@@ -59,7 +59,7 @@ void AEnermy::BeginPlay()
 		{
 			float temp = target->moveSpeed;
 		}
-		else if (target != nullptr)
+		if (target != nullptr)
 		{
 			//2-2. 플레이어위치 - 나의 위치 = 갈 방향을 설정
 			FVector targetDir = target->GetActorLocation() - GetActorLocation();
@@ -69,7 +69,7 @@ void AEnermy::BeginPlay()
 			direction = targetDir;
 		}
 	}
-
+	
 	//3. 그렇지 않으면
 	else
 	{
