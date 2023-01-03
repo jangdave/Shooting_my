@@ -113,6 +113,8 @@ void APlayerFlight::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 
 	//Fire 입력에 함수를 연결한다
 	//PlayerInputComponent->BindAction("FireBullet", IE_Pressed, this, &APlayerFlight::FireBullet);
+	
+	//PlayerInputComponent->BindAction("Boost", IE_Pressed, this, &APlayerFlight::FireBullet);
 
 	//블루프린트 + c++버전
 	//기존의 UInputComponent*변수를 UEnhancedInputComponent*로 변환
@@ -126,7 +128,10 @@ void APlayerFlight::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 	enhancedInputComponent->BindAction(ia_Vertical, ETriggerEvent::Completed, this, &APlayerFlight::Vertical);
 
 	enhancedInputComponent->BindAction(ia_FireBullet, ETriggerEvent::Triggered, this, &APlayerFlight::FireBullet);
-	
+	enhancedInputComponent->BindAction(ia_Boost, ETriggerEvent::Triggered, this, &APlayerFlight::Boost);
+	//enhancedInputComponent->BindAction(ia_Boost, ETriggerEvent::Completed, this, &APlayerFlight::Boost);
+	//enhancedInputComponent->BindAction(ia_UnBoost, ETriggerEvent::Completed, this, &APlayerFlight::UnBoost);
+			
 }
 
 void APlayerFlight::ReservationHitColor(float time)
@@ -188,13 +193,54 @@ void APlayerFlight::FireBullet()
 {
 	//총알을 생성한다
 	//총알 블루브린트 변수
-	FVector spawnPosition = GetActorLocation() + GetActorUpVector() * 100.0f;
-	FRotator spawnRotation = FRotator(90.0f, 0, 0);
-	FActorSpawnParameters param;
-	param.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+	//FVector spawnPosition = GetActorLocation() + GetActorUpVector() * 100.0f;
+	//FRotator spawnRotation = FRotator(90.0f, 0, 0);
 
-	GetWorld()->SpawnActor<ABullet>(bulletFactory, spawnPosition, spawnRotation, param);
+	for (int32 i = 0; i < bulletCount; i++)
+	{	
+		float len = (bulletCount-1)* bulletSpacing;
+		float y = len * -0.5f;
+		FVector set = FVector(0, y + bulletSpacing * i, 0); 
+		FVector spawnPosition = GetActorLocation() + GetActorUpVector() * 100.0f;
+		spawnPosition += set;
+		FRotator spawnRotation = FRotator(90.0f, 0, 0);
+		FActorSpawnParameters param;
+		param.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+		ABullet* bullet = GetWorld()->SpawnActor<ABullet>(bulletFactory, spawnPosition, spawnRotation, param);
+
+		//생성된 총알을 각도만큼 일정하게 회전시킨다
+		if(bullet != nullptr)
+		{
+			float yaw = (bulletCount-1) * bulletAngle * -0.5f;
+			FRotator ang = FRotator(0, 0, yaw + bulletAngle * i);
+			bullet->AddActorWorldRotation(ang);
+		}
+	}
+	//FActorSpawnParameters param;
+	//param.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+
+	//GetWorld()->SpawnActor<ABullet>(bulletFactory, spawnPosition, spawnRotation, param);
 
 	//총알발사 효과음 실행
 	UGameplayStatics::PlaySound2D(this, fireSound);
+}
+
+void APlayerFlight::Boost()
+{	
+	isBool = !isBool;
+	if (isBool)
+	{
+		moveSpeed = moveSpeedOrigin*2;
+	}
+	else
+	{
+		UE_LOG(LogTemp,Warning,TEXT("Boost"));
+		moveSpeed = moveSpeedOrigin;	
+	}
+}
+
+void APlayerFlight::UnBoost()
+{
+	//UE_LOG(LogTemp,Warning,TEXT("UnBoost"));
+	//moveSpeed = moveSpeedOrigin;
 }

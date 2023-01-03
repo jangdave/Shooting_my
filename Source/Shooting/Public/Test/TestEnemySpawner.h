@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "TestEnemyActor.h"
 #include "TestEnemySpawner.generated.h"
 
 UCLASS()
@@ -23,7 +24,16 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category=spawnersetting)
+	class USceneComponent* sceneComp;
+	
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category=spawnersetting)
+	class UArrowComponent* arrowComp;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = spawnersetting)
+	TSubclassOf<class ATestEnemyActor> factory;
+
 	float currentTime = 0;
 
-	int32 spawnTime = 3;
+	float spawnTime = 1;
 };

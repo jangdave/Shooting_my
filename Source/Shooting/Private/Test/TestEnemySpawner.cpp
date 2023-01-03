@@ -2,12 +2,22 @@
 
 
 #include "Test/TestEnemySpawner.h"
+#include "Components/SceneComponent.h"
+#include "Components/ArrowComponent.h"
+
+
+
 
 // Sets default values
 ATestEnemySpawner::ATestEnemySpawner()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
+
+	sceneComp=CreateDefaultSubobject<USceneComponent>(TEXT("Root Scene"));
+	SetRootComponent(sceneComp);
+	arrowComp=CreateDefaultSubobject<UArrowComponent>(TEXT("Arrow Comp"));
+	arrowComp->SetupAttachment(RootComponent);
 
 }
 
@@ -27,8 +37,9 @@ void ATestEnemySpawner::Tick(float DeltaTime)
 
 	if (currentTime >= spawnTime)
 	{
-		//GetWorld()->SpawnActor<ATestEnemyActor>
-
+		GetWorld()->SpawnActor<ATestEnemyActor>(factory, arrowComp->GetComponentLocation(), arrowComp->GetComponentRotation());
+		currentTime = 0;
 	}
+	
 }
 

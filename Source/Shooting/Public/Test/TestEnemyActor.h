@@ -23,11 +23,11 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category=EnemySettings)
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, category=enemysetting)
 	class UStaticMeshComponent* meshComp;
 
 	FVector direction;
 
-	float moveSpeed = 500.0f;
+	float moveSpeed =300;
 
 };

@@ -47,12 +47,31 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, Category=PlayerSettings)
 	class UInputAction* ia_FireBullet;
+	
+	UPROPERTY(EditDefaultsOnly, Category=PlayerSettings)
+	class UInputAction* ia_Boost;
+	
+	//UPROPERTY(EditDefaultsOnly, Category=PlayerSettings)
+	//class UInputAction* ia_UnBoost;
 
 	UPROPERTY(EditDefaultsOnly, Category=PlayerSettings)
 	class UInputMappingContext* imc_myMapping;
 
 	UPROPERTY(EditDefaultsOnly, Category=PlayerSettings)
 	class USoundBase* fireSound;
+	
+	UPROPERTY(EditDefaultsOnly, Category=PlayerSettings)
+	bool isBool = false;
+
+	UPROPERTY(EditAnywhere,Category=PlayerSettings)
+	int32 bulletCount = 2;
+
+	UPROPERTY(EditAnywhere,Category=PlayerSettings)
+	float bulletSpacing = 150;
+
+	UPROPERTY(EditAnywhere,Category=PlayerSettings)
+	float bulletAngle = 30.0f;
+	
 
 	void ReservationHitColor(float time);
 
@@ -66,6 +85,8 @@ private:
 	//엔진안 요소랑 똑같지 않아도 되긴함
 	//UFUNCTION(BlueprintCallable)
 	//void Horizental(float val);
+
+	float moveSpeedOrigin = 500;
 
 	UFUNCTION(BlueprintCallable)
 	void Horizental(const FInputActionValue& value);
@@ -83,6 +104,12 @@ private:
 	UFUNCTION(BlueprintCallable)
 	void FireBullet();
 	
+	UFUNCTION(BlueprintCallable)
+	void Boost();
+	
+	UFUNCTION(BlueprintCallable)
+	void UnBoost();
+
 	float H;
 	float V;
 
