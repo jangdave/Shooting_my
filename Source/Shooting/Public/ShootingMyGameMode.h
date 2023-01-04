@@ -21,6 +21,8 @@ public:
 	UPROPERTY(EditAnywhere, Category = MyDefaultSetting)
 	TSubclassOf<class UMenuWidget> menuWidget;
 
+	TArray<class AEnermy*> enemies;
+
 	UFUNCTION(BlueprintPure)
 	FORCEINLINE int32 GetCurrentScore() { return currentScore; }
 

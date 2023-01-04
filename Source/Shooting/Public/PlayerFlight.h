@@ -51,6 +51,9 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category=PlayerSettings)
 	class UInputAction* ia_Boost;
 	
+	UPROPERTY(EditDefaultsOnly, Category=PlayerSettings)
+	class UInputAction* ia_Boom;
+	
 	//UPROPERTY(EditDefaultsOnly, Category=PlayerSettings)
 	//class UInputAction* ia_UnBoost;
 
@@ -64,7 +67,7 @@ public:
 	bool isBool = false;
 
 	UPROPERTY(EditAnywhere,Category=PlayerSettings)
-	int32 bulletCount = 2;
+	int32 bulletCount = 4;
 
 	UPROPERTY(EditAnywhere,Category=PlayerSettings)
 	float bulletSpacing = 150;
@@ -78,6 +81,8 @@ public:
 	//void ChangeHitColor();
 	
 	void ChangeOriginColor();
+
+	bool canFire = true;
 
 
 private:
@@ -109,6 +114,11 @@ private:
 	
 	UFUNCTION(BlueprintCallable)
 	void UnBoost();
+	
+	UFUNCTION(BlueprintCallable)
+	void ExplosionAll();
+
+	class AEnermy* target;
 
 	float H;
 	float V;

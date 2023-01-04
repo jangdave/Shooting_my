@@ -10,6 +10,9 @@
 #include "EnhancedInputSubsystems.h"
 #include "EnhancedInputComponent.h"
 #include "Kismet/GameplayStatics.h"
+#include "Enermy.h"
+#include "EngineUtils.h"
+#include "ShootingMyGameMode.h"
 //구글검색을 해서 찾아보자
 
 // Sets default values
@@ -35,6 +38,8 @@ APlayerFlight::APlayerFlight()
 
 	//메시 컴포넌트를 루트 컴포넌트 하위 개체로 설정
 	meshComp->SetupAttachment(RootComponent);
+
+	meshComp->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 
 	//메시 컴포넌트의 Static Mesh 항목에 큐브 파일을 할당(직접 주소를 입력할 경우 해당 파일을 이동하면 작동안함)
 	ConstructorHelpers::FObjectFinder<UStaticMesh> cubeMesh(TEXT("/Script/Engine.StaticMesh'/Game/StarterContent/Shapes/Shape_Cube.Shape_Cube'"));
@@ -131,6 +136,7 @@ void APlayerFlight::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 	enhancedInputComponent->BindAction(ia_Boost, ETriggerEvent::Triggered, this, &APlayerFlight::Boost);
 	//enhancedInputComponent->BindAction(ia_Boost, ETriggerEvent::Completed, this, &APlayerFlight::Boost);
 	//enhancedInputComponent->BindAction(ia_UnBoost, ETriggerEvent::Completed, this, &APlayerFlight::UnBoost);
+	enhancedInputComponent->BindAction(ia_Boom, ETriggerEvent::Triggered, this, &APlayerFlight::ExplosionAll);
 			
 }
 
@@ -195,7 +201,10 @@ void APlayerFlight::FireBullet()
 	//총알 블루브린트 변수
 	//FVector spawnPosition = GetActorLocation() + GetActorUpVector() * 100.0f;
 	//FRotator spawnRotation = FRotator(90.0f, 0, 0);
-
+	if(canFire != true)
+	{
+		return;
+	}
 	for (int32 i = 0; i < bulletCount; i++)
 	{	
 		float len = (bulletCount-1)* bulletSpacing;
@@ -243,4 +252,41 @@ void APlayerFlight::UnBoost()
 {
 	//UE_LOG(LogTemp,Warning,TEXT("UnBoost"));
 	//moveSpeed = moveSpeedOrigin;
+}
+
+//궁극기 폭탄 함수
+void APlayerFlight::ExplosionAll()
+{
+	//모든 에너미 파괴
+	//TActorIterator 사용
+	//for (TActorIterator<AEnermy> it(GetWorld()); it; ++it)
+	//{
+	//	target = *it;
+		
+	//	if (target != nullptr)
+	//	{
+	//		target->DestoryMySelf();
+	//	}
+	//	else
+	//	{
+	//		return;
+	//	}
+	//}
+
+	//TArray<T> 배열을 이용한 방식---------------------------------------------
+	AShootingMyGameMode* gm = Cast<AShootingMyGameMode>(GetWorld()->GetAuthGameMode());
+
+	if (gm != nullptr)
+	{
+		for (int32 i = 0; i < gm->enemies.Num(); i++)
+		{
+			//Pending kill 상태체크
+			if (IsValid(gm->enemies[i]))
+			{
+				gm->enemies[i]->DestoryMySelf();
+			}
+		}
+		//리스트 초기화
+		gm->enemies.Empty();
+	}
 }

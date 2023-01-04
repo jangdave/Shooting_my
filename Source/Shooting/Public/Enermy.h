@@ -35,9 +35,15 @@ public:
 	UPROPERTY(EditDefaultsOnly,Category=EnemySettions)
 	int32 traceRate = 30;
 
+	UPROPERTY(EditDefaultsOnly,Category=EnemySettions)
+	class UParticleSystem* explosion_fx;
+
 	UFUNCTION()
 	void OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 
+	void DestoryMySelf();
+
+	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 private:
 	FVector direction;
 	//타겟 찾는법 - 클래스
