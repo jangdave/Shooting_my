@@ -259,34 +259,34 @@ void APlayerFlight::ExplosionAll()
 {
 	//모든 에너미 파괴
 	//TActorIterator 사용
-	//for (TActorIterator<AEnermy> it(GetWorld()); it; ++it)
-	//{
-	//	target = *it;
+	for (TActorIterator<AEnermy> it(GetWorld()); it; ++it)
+	{
+		target = *it;
 		
-	//	if (target != nullptr)
-	//	{
-	//		target->DestoryMySelf();
-	//	}
-	//	else
-	//	{
-	//		return;
-	//	}
-	//}
+		if (target != nullptr)
+		{
+			target->DestoryMySelf();
+		}
+		else
+		{
+			return;
+		}
+	}
 
 	//TArray<T> 배열을 이용한 방식---------------------------------------------
-	AShootingMyGameMode* gm = Cast<AShootingMyGameMode>(GetWorld()->GetAuthGameMode());
+	//AShootingMyGameMode* gm = Cast<AShootingMyGameMode>(GetWorld()->GetAuthGameMode());
 
-	if (gm != nullptr)
-	{
-		for (int32 i = 0; i < gm->enemies.Num(); i++)
-		{
+	//if (gm != nullptr)
+	//{
+	//	for (int32 i = 0; i < gm->enemies.Num(); i++)
+	//	{
 			//Pending kill 상태체크
-			if (IsValid(gm->enemies[i]))
-			{
-				gm->enemies[i]->DestoryMySelf();
-			}
-		}
+	//		if (IsValid(gm->enemies[i]))
+	//		{
+	//			gm->enemies[i]->DestoryMySelf();
+	//		}
+	//	}
 		//리스트 초기화
-		gm->enemies.Empty();
-	}
+	//	gm->enemies.Empty();
+	//}
 }
