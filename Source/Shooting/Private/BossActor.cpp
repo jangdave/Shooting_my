@@ -37,24 +37,24 @@ void ABossActor::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 	
 	//현재 위치에서 (0, 0, 200) 위치까지 이동한다
-	float distance = (startlocation - GetActorLocation()).Length();
-	float shaking = FMath::RandRange(-1.0f,1.0f); 
+	//float distance = (startlocation - GetActorLocation()).Length();
+	//float shaking = FMath::RandRange(-1.0f,1.0f); 
 
-	if (distance < 500)
-	{
-		FVector loc = GetActorUpVector()*-1;
-		loc.Y = shaking;
-		SetActorLocation(GetActorLocation()+loc*100*DeltaTime);
-	}
-	else
-	{
-		SetActorLocation(FVector(0,0,200));
-	}
+	//if (distance < 500)
+	//{
+	//	FVector loc = GetActorUpVector()*-1;
+	//	loc.Y = shaking;
+	//	SetActorLocation(GetActorLocation()+loc*100*DeltaTime);
+	//}
+	//else
+	//{
+	//	SetActorLocation(FVector(0,0,200));
+	//}
 
 	//리니어 이용한 방법-----------------------------------------------
-	//testValue += DeltaTime;
-	//testValue = FMath::Clamp(testValue, 0.0f, 1.0f);
-	//FVector result = FMath::Lerp(startlocation, endlocation, testValue);
-	//SetActorLocation(result);
+	testValue += DeltaTime;
+	testValue = FMath::Clamp(testValue, 0.0f, 1.0f);
+	FVector result = FMath::Lerp(startlocation, endlocation, testValue);
+	SetActorLocation(result);
 }
 
