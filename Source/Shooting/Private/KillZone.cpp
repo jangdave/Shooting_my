@@ -4,6 +4,7 @@
 #include "KillZone.h"
 #include "Components/BoxComponent.h"
 #include "PlayerFlight.h"
+#include "BossActor.h"
 
 // Sets default values
 AKillZone::AKillZone()
@@ -40,8 +41,13 @@ void AKillZone::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* Othe
 {
 	//플레이어를 제외한 부딪힌 모든 대상을 제거한다
 	APlayerFlight* player = Cast<APlayerFlight>(OtherActor);
+	ABossActor* Boss = Cast<ABossActor>(OtherActor);
 
 	if (player != nullptr)
+	{
+
+	}
+	else if (Boss != nullptr)
 	{
 
 	}

@@ -35,6 +35,10 @@ public:
 	UPROPERTY(EditInstanceOnly, Category=PoolSettings)
 	class USceneComponent* rootScene;
 
+	bool stop = false;
+
+	void Timer(float time);
+
 private:
 	float currentTime = 0;
 

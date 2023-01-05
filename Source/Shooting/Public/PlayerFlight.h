@@ -7,6 +7,12 @@
 #include "InputActionValue.h"
 #include "PlayerFlight.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FULTbomb);
+
+//백터를 인자로 넘겨받는 델리게이트 선언(FDirectionModifier)
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FDirectionModifier, FVector, newDir);
+
+
 UCLASS()
 class SHOOTING_API APlayerFlight : public APawn
 {
@@ -75,7 +81,6 @@ public:
 	UPROPERTY(EditAnywhere,Category=PlayerSettings)
 	float bulletAngle = 30.0f;
 	
-
 	void ReservationHitColor(float time);
 
 	//void ChangeHitColor();
@@ -84,6 +89,9 @@ public:
 
 	bool canFire = true;
 
+	FULTbomb playerBomb;
+
+	FDirectionModifier dirm;
 
 private:
 	

@@ -85,7 +85,7 @@ void ABullet::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherA
 		AGameModeBase* gm = UGameplayStatics::GetGameMode(this);
 		//위랑 똑같다 AGameModeBase* gm = GetWorld()->GetAuthGameMode();
 		AShootingMyGameMode* myGM = Cast<AShootingMyGameMode>(gm);
-		myGM->AddScore(1);
+		myGM->AddScore(5);
 		//UE_LOG(LogTemp, Warning, TEXT("Point: %d"), myGM->GetCurrentScore());
 
 		//나 자신도 제거

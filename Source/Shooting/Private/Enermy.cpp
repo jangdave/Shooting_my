@@ -67,6 +67,8 @@ void AEnermy::BeginPlay()
 			targetDir.Normalize();
 
 			direction = targetDir;
+
+			//target->playerBomb.AddDynamic(this, &AEnermy::DestoryMySelf);
 		}
 	}
 	
@@ -81,12 +83,13 @@ void AEnermy::BeginPlay()
 	boxComp->SetGenerateOverlapEvents(true);
 
 	//게임모드의 enemies 배열에 자기 자신을 넣는다
-	AShootingMyGameMode* gm = Cast<AShootingMyGameMode>(GetWorld()->GetAuthGameMode());
+	//AShootingMyGameMode* gm = Cast<AShootingMyGameMode>(GetWorld()->GetAuthGameMode());
 
-	if (gm != nullptr)
-	{
-		gm->enemies.Add(this);
-	}
+	//if (gm != nullptr)
+	//{
+	//	gm->enemies.Add(this);
+	//}
+	target->dirm.AddDynamic(this, &AEnermy::SetNewDirection);
 }
 
 // Called every frame
@@ -95,7 +98,7 @@ void AEnermy::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
 	SetActorLocation(GetActorLocation() + direction * moveSpeed * DeltaTime);
-
+	
 }
 
 void AEnermy::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
@@ -130,10 +133,19 @@ void AEnermy::DestoryMySelf()
 void AEnermy::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
 	//자기자신을 배열에서 제거한다.
-	AShootingMyGameMode* gm = Cast<AShootingMyGameMode>(GetWorld()->GetAuthGameMode());
+	//AShootingMyGameMode* gm = Cast<AShootingMyGameMode>(GetWorld()->GetAuthGameMode());
 
-	if (gm != nullptr)
-	{
-		gm->enemies.Remove(this);
-	}
+	//if (gm != nullptr)
+	//{
+	//	gm->enemies.Remove(this);
+	//}
+
+	//델리게이트에 걸어놓은 자기함수를 제거한다
+	//target->playerBomb.RemoveDynamic(this, &AEnermy::DestoryMySelf);
+}
+
+void AEnermy::SetNewDirection(FVector newDir)
+{
+	//이동 방향을 newDir로 바꾼다
+	direction = newDir;
 }

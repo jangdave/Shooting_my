@@ -7,9 +7,19 @@
 #include "MainWidget.h"
 #include "MenuWidget.h"
 #include "Kismet/Gameplaystatics.h"
+#include "EnermySpawner.h"
+#include "BossActor.h"
+#include "EngineUtils.h"
+
+AShootingMyGameMode::AShootingMyGameMode()
+{
+	PrimaryActorTick.bCanEverTick = true;
+}
 
 void AShootingMyGameMode::BeginPlay()
 {
+	Super::BeginPlay();
+
 	//위젯 블루프린트 생성
 	Main_UI = CreateWidget<UMainWidget>(GetWorld(), mainWidget);
 
@@ -40,6 +50,11 @@ void AShootingMyGameMode::BeginPlay()
 	//GEngine->AddOnScreenDebugMessage(1, 3.0f, FColor::Emerald, TEXT("logTest"), true);
 }
 
+void AShootingMyGameMode::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+}
+
 void AShootingMyGameMode::AddScore(int32 count)
 {
 	currentScore += count;
@@ -58,6 +73,27 @@ void AShootingMyGameMode::AddScore(int32 count)
 	{
 		//현재 점수를 위젯의 curScore 텍스트 블록에 반영
 		Main_UI->PrintCurrentScore();
+	}
+
+	if (currentScore >= 30)
+	{	
+		GetWorld()->GetTimerManager().SetTimer(spawnTimer, this, &AShootingMyGameMode::BossSpawn, 4.0f, false);
+
+		//모든 스폰을 중단
+		StopSpawn();
+	}
+}
+
+void AShootingMyGameMode::BossSpawn()
+{
+	GetWorld()->SpawnActor<ABossActor>(bossactor, FVector(0, 0, 700.0f), FRotator::ZeroRotator);
+}
+
+void AShootingMyGameMode::StopSpawn()
+{
+	for (TActorIterator<AEnermySpawner> it(GetWorld()); it; ++it)
+	{
+		it->SetActorTickEnabled(false);
 	}
 }
 

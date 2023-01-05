@@ -218,7 +218,7 @@ void APlayerFlight::FireBullet()
 		ABullet* bullet = GetWorld()->SpawnActor<ABullet>(bulletFactory, spawnPosition, spawnRotation, param);
 
 		//생성된 총알을 각도만큼 일정하게 회전시킨다
-		if(bullet != nullptr)
+		if(bullet != nullptr && IsValid(bullet))
 		{
 			float yaw = (bulletCount-1) * bulletAngle * -0.5f;
 			FRotator ang = FRotator(0, 0, yaw + bulletAngle * i);
@@ -259,21 +259,21 @@ void APlayerFlight::ExplosionAll()
 {
 	//모든 에너미 파괴
 	//TActorIterator 사용
-	for (TActorIterator<AEnermy> it(GetWorld()); it; ++it)
-	{
-		target = *it;
+	//for (TActorIterator<AEnermy> it(GetWorld()); it; ++it)
+	//{
+	//	target = *it;
 		
-		if (target != nullptr)
-		{
-			target->DestoryMySelf();
-		}
-		else
-		{
-			return;
-		}
-	}
+	//	if (target != nullptr)
+	//	{
+	//		target->DestoryMySelf();
+	//	}
+	//	else
+	//	{
+	//		return;
+	//	}
+	//}
 
-	//TArray<T> 배열을 이용한 방식---------------------------------------------
+	//TArray<T> 배열을 이용한 방식--------------------------------------------------------------
 	//AShootingMyGameMode* gm = Cast<AShootingMyGameMode>(GetWorld()->GetAuthGameMode());
 
 	//if (gm != nullptr)
@@ -289,4 +289,9 @@ void APlayerFlight::ExplosionAll()
 		//리스트 초기화
 	//	gm->enemies.Empty();
 	//}
+
+	//직접만든 델리게이트실행--------------------------------------------------------------------
+	//playerBomb.Broadcast();
+
+	dirm.Broadcast(GetActorRightVector());
 }

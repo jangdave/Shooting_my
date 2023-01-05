@@ -30,13 +30,21 @@ void AEnermySpawner::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	if (stop != true)
+	{
+		Timer(DeltaTime);
+	}
+}
+
+void AEnermySpawner::Timer(float time)
+{
 	//경과된 시간을 누적
-	currentTime += DeltaTime;
-	
+	currentTime += time;
+
 
 	//만일 누적된 시간이 스폰쿨에 지정한 시간보다 크거나 같다면
 	if (currentTime >= spawncool)
-	{		
+	{
 		//에너미 블루프린트 생성
 		//애로우 컴포넌트의 위치와 회전상태로 맞춰서 생성
 		GetWorld()->SpawnActor<AEnermy>(enermyFactory, spawnArrow->GetComponentLocation(), spawnArrow->GetComponentRotation());
@@ -44,6 +52,5 @@ void AEnermySpawner::Tick(float DeltaTime)
 		//누적된 시간을 다시 0으로 초기화
 		currentTime = 0;
 	}
-
 }
 
