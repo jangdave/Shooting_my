@@ -4,6 +4,8 @@
 #include "BossActor.h"
 #include "Components/BoxComponent.h"
 #include "Components/StaticMeshComponent.h"
+#include "EnemyBullet.h"
+#include "Kismet/KismetMathLibrary.h"
 
 // Sets default values
 ABossActor::ABossActor()
@@ -56,5 +58,42 @@ void ABossActor::Tick(float DeltaTime)
 	testValue = FMath::Clamp(testValue, 0.0f, 1.0f);
 	FVector result = FMath::Lerp(startlocation, endlocation, testValue);
 	SetActorLocation(result);
+
+	if (currentTime > pattern_delay)
+	{
+		BossAttack1(15, 6);
+		currentTime = 0;
+	}
+	else
+	{
+		currentTime += DeltaTime;
+	}
+}
+
+void ABossActor::BossAttack1(float angle, int32 count)
+{
+	float tangle = 270 - angle * (count - 1) * 0.5f;
+	
+	for(int32 i = 0; i < count; i++)
+	{	
+		//기본 좌표 (0, rcos@, rsin@)
+		FVector bullet_base = FVector(0, 
+					100 * FMath::Cos(FMath::DegreesToRadians (tangle + angle*i)), 
+					100 * FMath::Sin(FMath::DegreesToRadians (tangle + angle*i)));
+		
+		//AEnemyBullet* enemyBullet = GetWorld()->SpawnActor<AEnemyBullet>(bullet, 
+		//			GetActorLocation() + bullet_base, FRotator::ZeroRotator);
+		
+		//enemyBullet->SetDirection(bullet_base.GetSafeNormal());
+
+		//---------------------------------------------------------------------------------
+		//UP벡터 축을 bullet_base 방향으로 회전시켰을때의 로테이터 값을 계산한다
+		AEnemyBullet* enemyBullet = GetWorld()->SpawnActor<AEnemyBullet>(bullet, 
+					GetActorLocation() + bullet_base, FRotator(-90, 0, 0));
+
+		FRotator rot = UKismetMathLibrary::MakeRotFromZX(enemyBullet->GetActorUpVector(), bullet_base.GetSafeNormal());
+
+		enemyBullet->SetActorRotation(rot);
+	}
 }
 

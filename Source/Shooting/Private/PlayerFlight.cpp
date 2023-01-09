@@ -13,6 +13,7 @@
 #include "Enermy.h"
 #include "EngineUtils.h"
 #include "ShootingMyGameMode.h"
+#include "DrawDebugHelpers.h"
 //구글검색을 해서 찾아보자
 
 // Sets default values
@@ -136,7 +137,7 @@ void APlayerFlight::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 	enhancedInputComponent->BindAction(ia_Boost, ETriggerEvent::Triggered, this, &APlayerFlight::Boost);
 	//enhancedInputComponent->BindAction(ia_Boost, ETriggerEvent::Completed, this, &APlayerFlight::Boost);
 	//enhancedInputComponent->BindAction(ia_UnBoost, ETriggerEvent::Completed, this, &APlayerFlight::UnBoost);
-	enhancedInputComponent->BindAction(ia_Boom, ETriggerEvent::Triggered, this, &APlayerFlight::ExplosionAll);
+	enhancedInputComponent->BindAction(ia_Boom, ETriggerEvent::Triggered, this, &APlayerFlight::CheckEnemies);
 			
 }
 
@@ -161,6 +162,7 @@ void APlayerFlight::ChangeOriginColor()
 	//my_mat->SetVectorParameterValue(TEXT("myColor"), initColor);
 	// 위랑 같은거 my_mat->SetVectorParameterValue(TEXT("myColor"), FLinearColor(255, 0, 0, 255);
 }
+
 
 //블루프린트 + c++버전
 // 좌우 입력시 실행되는 함수
@@ -294,4 +296,27 @@ void APlayerFlight::ExplosionAll()
 	//playerBomb.Broadcast();
 
 	dirm.Broadcast(GetActorRightVector());
+}
+
+void APlayerFlight::CheckEnemies()
+{
+	//반경 5미터 이내에 있는 모든 AEnemy엑터들을 감지한다
+	//감지된 에너미들의 정보를 담을 변수의 배열
+	TArray<FOverlapResult> enemiesInfo;
+	FVector centerLoc = GetActorLocation() + GetActorUpVector() * 700;
+	FQuat centerRot = GetActorRotation().Quaternion();
+	FCollisionObjectQueryParams params = FCollisionObjectQueryParams(ECC_GameTraceChannel2);
+	FCollisionShape checkShape = FCollisionShape::MakeSphere(500);
+
+	GetWorld()->OverlapMultiByObjectType(enemiesInfo, centerLoc, centerRot, params, checkShape);
+
+	//체크된 모든 에너미의 이름을 체크한다
+	for (FOverlapResult enemyInfo : enemiesInfo)
+	{
+		UE_LOG(LogTemp,Warning,TEXT("Hited : %s"), *enemyInfo.GetActor()->GetName());
+		
+		enemyInfo.GetActor()->Destroy();
+	}
+
+	DrawDebugSphere(GetWorld(), centerLoc, 500, 20, FColor::Yellow, false, 2);
 }

@@ -19,7 +19,6 @@ ABullet::ABullet()
 	SetRootComponent(boxComp);
 	boxComp->SetBoxExtent(FVector(50.0f, 50.0f, 50.0f));
 	boxComp->SetWorldScale3D(FVector(0.75f, 0.25f, 0.5f));
-	boxComp->SetCollisionProfileName(TEXT("BulletPreset"));
 
 	//매쉬생성
 	meshComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Static Mesh"));
@@ -36,7 +35,7 @@ void ABullet::BeginPlay()
 	Super::BeginPlay();
 
 	// 충돌(오버랩)이 발생하면 실행할 함수 연결
-	boxComp->OnComponentBeginOverlap.AddDynamic(this, &ABullet::OnOverlap);
+	//boxComp->OnComponentBeginOverlap.AddDynamic(this, &ABullet::OnOverlap);
 
 	// 오버랩 이벤트가 발생하도록 설정
 	boxComp->SetGenerateOverlapEvents(true);
@@ -65,34 +64,12 @@ void ABullet::Tick(float DeltaTime)
 
 }
 
-void ABullet::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+void ABullet::SetDirection(FVector value)
 {
-	//만일 부딪힌 대상이 총알이라면
-	AEnermy* enemy = Cast<AEnermy>(OtherActor);
+	direction = value;
+}
 
-	if (enemy != nullptr)
-	{
-		//적이 있던 위치에 폭발이펙트 생성
-		FVector enemyLoc = enemy->GetActorLocation();
-		FRotator enemyRot = enemy->GetActorRotation();
-
-		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), explosion_effect, enemyLoc, enemyRot, true);
-
-		//적을 제거 
-		enemy->Destroy();
-
-		//게임모드의 점수를 1점씩 올린다
-		AGameModeBase* gm = UGameplayStatics::GetGameMode(this);
-		//위랑 똑같다 AGameModeBase* gm = GetWorld()->GetAuthGameMode();
-		AShootingMyGameMode* myGM = Cast<AShootingMyGameMode>(gm);
-		myGM->AddScore(5);
-		//UE_LOG(LogTemp, Warning, TEXT("Point: %d"), myGM->GetCurrentScore());
-
-		//나 자신도 제거
-		Destroy();
-	}
-	
-}void ABullet::DestroyMySelf()
+void ABullet::DestroyMySelf()
 {
 	Destroy();
 }

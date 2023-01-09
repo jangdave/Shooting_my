@@ -47,10 +47,6 @@ void AKillZone::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* Othe
 	{
 
 	}
-	else if (Boss != nullptr)
-	{
-
-	}
 	else
 	{
 		OtherActor->Destroy();

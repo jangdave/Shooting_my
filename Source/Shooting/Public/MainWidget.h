@@ -15,11 +15,14 @@ class SHOOTING_API UMainWidget : public UUserWidget
 	GENERATED_BODY()
 	
 public:
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="MySettion|Score", meta=(BindWidget))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="MySetting|Score", meta=(BindWidget))
 	class UTextBlock* curScore;
 
-	UPROPERTY(EditAnywhere, Category="MySettiong|Score", meta=(BindWidget))
+	UPROPERTY(EditAnywhere, Category="MySetting|Score", meta=(BindWidget))
 	class UTextBlock* bestScore;
+	
+	UPROPERTY(EditAnywhere, Category="MySetting|Score", meta=(BindWidgetAnim), Transient)
+	class UWidgetAnimation* scoreAnim;
 
 	void PrintCurrentScore();
 };

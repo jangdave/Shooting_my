@@ -21,5 +21,8 @@ void UMainWidget::PrintCurrentScore()
 		FText bestscoreText = FText::AsNumber(myGM->GetBestScore());
 		//curScore 텍스트 블록의 값으로 설정한다.
 		bestScore->SetText(bestscoreText);
+
+		//scoreAnim 실행
+		PlayAnimation(scoreAnim, 0, 1, EUMGSequencePlayMode::Forward);
 	}
 }

@@ -32,6 +32,14 @@ public:
 	UPROPERTY(EditAnywhere, Category=BossSettings)
 	float testValue;
 
+	UPROPERTY(EditAnywhere, Category=BossSettings)
+	TSubclassOf<class AEnemyBullet> bullet;
+
+	UFUNCTION()
+	void BossAttack1(float angle, int32 count);
+
 	FVector startlocation;
 	FVector endlocation;
+	float currentTime = 0;
+	float pattern_delay = 2;
 };

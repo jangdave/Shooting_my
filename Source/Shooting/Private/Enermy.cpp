@@ -8,6 +8,7 @@
 #include "PlayerFlight.h"
 #include "EngineUtils.h"
 #include "ShootingMyGameMode.h"
+#include "MyShootingLibrary.h"
 
 // Sets default values
 AEnermy::AEnermy()
@@ -97,7 +98,10 @@ void AEnermy::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	SetActorLocation(GetActorLocation() + direction * moveSpeed * DeltaTime);
+	//SetActorLocation(GetActorLocation() + direction * moveSpeed * DeltaTime);
+	//우리가 만든 라이브러리 함수를 이용해서 이동시킨다
+	UMyShootingLibrary::MoveMyActor(this, direction, moveSpeed, DeltaTime);
+
 	
 }
 

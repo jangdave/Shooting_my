@@ -87,6 +87,8 @@ public:
 	
 	void ChangeOriginColor();
 
+	void CheckEnemies();
+
 	bool canFire = true;
 
 	FULTbomb playerBomb;
